@@ -450,7 +450,7 @@ function Index() {
 
   return (
     <div className="min-h-screen relative overflow-hidden" style={{
-      background: BACKGROUNDS[bgIndex]?.css ?? BACKGROUNDS[0].css,
+      background: hackerMode ? HACKER_BG : (BACKGROUNDS[bgIndex]?.css ?? BACKGROUNDS[0].css),
       color: "var(--color-foreground)",
     }}>
       {/* grid bg */}
@@ -534,13 +534,16 @@ function Index() {
             style={{ filter: "drop-shadow(0 0 40px oklch(0.7 0.25 200 / 0.55))" }}
           >
             <img
-              src={protogenImg}
-              alt="Protogen mascot — click to boop"
+              src={hackerMode ? hackerImg : protogenImg}
+              alt={hackerMode ? "Hacker protogen — click to hack" : "Protogen mascot — click to boop"}
               width={384}
               height={384}
               draggable={false}
               className={"w-72 h-72 md:w-96 md:h-96 transition-transform " + (bouncing ? "scale-95" : "scale-100")}
-              style={{ animation: "protoFloat 4s ease-in-out infinite" }}
+              style={{
+                animation: "protoFloat 4s ease-in-out infinite",
+                filter: hackerMode ? "drop-shadow(0 0 30px oklch(0.7 0.3 145 / 0.8))" : undefined,
+              }}
             />
             {pops.map((p) => (
               <span key={p.id}
