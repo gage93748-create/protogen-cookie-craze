@@ -281,7 +281,7 @@ function Index() {
             <div className="text-5xl md:text-6xl font-extrabold" style={{ color: "oklch(0.92 0.15 200)", textShadow: "0 0 30px oklch(0.7 0.25 200 / 0.7)" }}>
               {fmt(state.bytes)}
             </div>
-            <div className="text-sm md:text-base opacity-80 mt-1">bytes • {fmt(bps)}/sec • +{fmt(state.perClick)}/boop</div>
+            <div className="text-sm md:text-base opacity-80 mt-1">cookies • {fmt(bps)}/sec • +{fmt(state.perClick)}/boop</div>
           </div>
 
           <button
@@ -322,11 +322,11 @@ function Index() {
               color: "white",
               boxShadow: "0 4px 24px oklch(0.5 0.2 240 / 0.5)",
             }}>
-            Upgrade Boop Power → +1 ({fmt(clickCost)} bytes)
+            Upgrade Boop Power → +1 ({fmt(clickCost)} cookies)
           </button>
 
           <div className="mt-6 text-xs opacity-70 text-center max-w-md">
-            Total bytes earned: {fmt(state.totalBytes)} • Boops: {state.clicks}
+            Total cookies earned: {fmt(state.totalBytes)} • Boops: {state.clicks}
           </div>
         </section>
 
@@ -359,7 +359,7 @@ function Index() {
                     </div>
                     <div className="text-xs opacity-70 truncate">{u.desc}</div>
                     <div className="text-xs mt-1" style={{ color: "oklch(0.85 0.18 200)" }}>
-                      {fmt(cost)} bytes • +{u.bps}/sec
+                      {fmt(cost)} cookies • +{u.bps}/sec
                     </div>
                   </div>
                 </button>
