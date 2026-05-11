@@ -392,7 +392,7 @@ function Index() {
 
   return (
     <div className="min-h-screen relative overflow-hidden" style={{
-      background: "radial-gradient(ellipse at top, oklch(0.28 0.12 280) 0%, oklch(0.13 0.05 270) 60%, oklch(0.08 0.03 260) 100%)",
+      background: BACKGROUNDS[bgIndex]?.css ?? BACKGROUNDS[0].css,
       color: "var(--color-foreground)",
     }}>
       {/* grid bg */}
@@ -406,12 +406,58 @@ function Index() {
         <h1 className="text-2xl md:text-3xl font-bold tracking-tight" style={{ textShadow: "0 0 24px oklch(0.8 0.2 200 / 0.6)" }}>
           <span style={{ color: "oklch(0.85 0.18 200)" }}>Protogen</span> Clicker
         </h1>
-        <button onClick={reset}
-          className="text-xs px-3 py-1.5 rounded-md border transition hover:bg-white/10"
-          style={{ borderColor: "oklch(0.8 0.18 200 / 0.5)", color: "oklch(0.85 0.18 200)" }}>
-          Reset
-        </button>
+        <div className="flex items-center gap-2">
+          {glitchUnlocked && (
+            <button onClick={() => setShowBgPanel((v) => !v)}
+              className="text-xs px-3 py-1.5 rounded-md border transition hover:bg-white/10"
+              style={{ borderColor: "oklch(0.8 0.18 200 / 0.5)", color: "oklch(0.85 0.18 200)" }}>
+              🎨 Backgrounds
+            </button>
+          )}
+          <button onClick={reset}
+            className="text-xs px-3 py-1.5 rounded-md border transition hover:bg-white/10"
+            style={{ borderColor: "oklch(0.8 0.18 200 / 0.5)", color: "oklch(0.85 0.18 200)" }}>
+            Reset
+          </button>
+        </div>
       </header>
+
+      {glitchUnlocked && showBgPanel && (
+        <div className="relative z-20 mx-auto max-w-7xl px-6 mb-4">
+          <div className="rounded-xl p-4 border" style={{
+            background: "oklch(0.12 0.04 270 / 0.85)",
+            borderColor: "oklch(0.7 0.2 200 / 0.4)",
+            backdropFilter: "blur(8px)",
+          }}>
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-sm font-bold" style={{ color: "oklch(0.85 0.18 200)" }}>
+                Glitch Backgrounds — pick one
+              </h3>
+              <button onClick={() => setShowBgPanel(false)}
+                className="text-xs opacity-70 hover:opacity-100">close ✕</button>
+            </div>
+            <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-2">
+              {BACKGROUNDS.map((bg, i) => (
+                <button
+                  key={i}
+                  onClick={() => pickBg(i)}
+                  title={bg.name}
+                  aria-label={`Background: ${bg.name}`}
+                  className="aspect-square rounded-md border transition hover:scale-110"
+                  style={{
+                    background: bg.css,
+                    borderColor: bgIndex === i ? "oklch(0.95 0.2 200)" : "oklch(0.5 0.05 260 / 0.6)",
+                    boxShadow: bgIndex === i ? "0 0 12px oklch(0.7 0.25 200 / 0.8)" : "none",
+                  }}
+                />
+              ))}
+            </div>
+            <div className="text-xs opacity-70 mt-3">
+              Selected: <span className="font-semibold" style={{ color: "oklch(0.9 0.15 200)" }}>{BACKGROUNDS[bgIndex]?.name}</span>
+            </div>
+          </div>
+        </div>
+      )}
 
       <main className="relative z-10 grid lg:grid-cols-[1fr_400px] gap-8 px-6 pb-12 max-w-7xl mx-auto">
         {/* Clicker */}
