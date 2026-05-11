@@ -162,6 +162,60 @@ type SaveState = {
 
 const STORAGE_KEY = "protogen-clicker-save-v1";
 
+// 50 unlockable backgrounds for the GLITCH code.
+const BACKGROUNDS: { name: string; css: string }[] = [
+  { name: "Cyber Default", css: "radial-gradient(ellipse at top, oklch(0.28 0.12 280) 0%, oklch(0.13 0.05 270) 60%, oklch(0.08 0.03 260) 100%)" },
+  { name: "Neon Sunset",   css: "linear-gradient(180deg, oklch(0.4 0.18 30), oklch(0.2 0.15 320))" },
+  { name: "Acid Lime",     css: "linear-gradient(135deg, oklch(0.5 0.25 140), oklch(0.2 0.1 200))" },
+  { name: "Bubblegum",     css: "linear-gradient(135deg, oklch(0.7 0.2 350), oklch(0.6 0.2 300))" },
+  { name: "Deep Space",    css: "radial-gradient(circle at 30% 20%, oklch(0.25 0.1 270), oklch(0.05 0.02 260))" },
+  { name: "Lava",          css: "linear-gradient(180deg, oklch(0.45 0.22 30), oklch(0.15 0.1 20))" },
+  { name: "Glacier",       css: "linear-gradient(180deg, oklch(0.85 0.05 220), oklch(0.4 0.1 240))" },
+  { name: "Forest",        css: "linear-gradient(180deg, oklch(0.4 0.12 150), oklch(0.15 0.06 140))" },
+  { name: "Mono Ink",      css: "linear-gradient(180deg, oklch(0.2 0 0), oklch(0.05 0 0))" },
+  { name: "Pure White",    css: "linear-gradient(180deg, oklch(0.98 0 0), oklch(0.9 0 0))" },
+  { name: "Vapor",         css: "linear-gradient(135deg, oklch(0.7 0.18 320), oklch(0.6 0.18 220))" },
+  { name: "Aurora",        css: "linear-gradient(135deg, oklch(0.5 0.2 160), oklch(0.4 0.2 280), oklch(0.5 0.2 30))" },
+  { name: "Magma",         css: "radial-gradient(circle at 50% 80%, oklch(0.6 0.25 40), oklch(0.1 0.08 20))" },
+  { name: "Ocean",         css: "linear-gradient(180deg, oklch(0.45 0.15 220), oklch(0.15 0.08 240))" },
+  { name: "Cherry",        css: "linear-gradient(135deg, oklch(0.55 0.22 20), oklch(0.25 0.15 0))" },
+  { name: "Mint",          css: "linear-gradient(180deg, oklch(0.85 0.1 170), oklch(0.5 0.15 180))" },
+  { name: "Plasma",        css: "conic-gradient(from 90deg, oklch(0.5 0.25 320), oklch(0.5 0.25 200), oklch(0.5 0.25 60), oklch(0.5 0.25 320))" },
+  { name: "Synthwave",     css: "linear-gradient(180deg, oklch(0.3 0.15 300) 0%, oklch(0.4 0.2 340) 50%, oklch(0.5 0.22 30) 100%)" },
+  { name: "Toxic",         css: "linear-gradient(135deg, oklch(0.7 0.25 130), oklch(0.3 0.15 280))" },
+  { name: "Royal",         css: "linear-gradient(180deg, oklch(0.3 0.15 280), oklch(0.15 0.1 290))" },
+  { name: "Sahara",        css: "linear-gradient(180deg, oklch(0.75 0.15 70), oklch(0.4 0.12 50))" },
+  { name: "Twilight",      css: "linear-gradient(180deg, oklch(0.5 0.15 260), oklch(0.2 0.1 320))" },
+  { name: "Candy",         css: "linear-gradient(135deg, oklch(0.85 0.15 350), oklch(0.7 0.2 50), oklch(0.75 0.18 200))" },
+  { name: "Cyber Pink",    css: "linear-gradient(135deg, oklch(0.55 0.25 340), oklch(0.25 0.15 290))" },
+  { name: "Matrix",        css: "linear-gradient(180deg, oklch(0.15 0.05 150), oklch(0.05 0.02 140))" },
+  { name: "Hot Coral",     css: "linear-gradient(135deg, oklch(0.7 0.22 30), oklch(0.45 0.2 10))" },
+  { name: "Galaxy",        css: "radial-gradient(circle at 70% 30%, oklch(0.4 0.2 290), oklch(0.1 0.05 270))" },
+  { name: "Mocha",         css: "linear-gradient(180deg, oklch(0.4 0.06 60), oklch(0.18 0.04 50))" },
+  { name: "Citrus",        css: "linear-gradient(135deg, oklch(0.85 0.18 90), oklch(0.65 0.2 45))" },
+  { name: "Sapphire",      css: "linear-gradient(180deg, oklch(0.35 0.18 250), oklch(0.1 0.08 250))" },
+  { name: "Ember",         css: "radial-gradient(circle at 50% 100%, oklch(0.6 0.22 40), oklch(0.1 0.05 20))" },
+  { name: "Iceberg",       css: "linear-gradient(180deg, oklch(0.9 0.04 220), oklch(0.55 0.1 230))" },
+  { name: "Oil Slick",     css: "conic-gradient(from 180deg, oklch(0.3 0.15 280), oklch(0.3 0.15 180), oklch(0.3 0.15 80), oklch(0.3 0.15 280))" },
+  { name: "Peach",         css: "linear-gradient(180deg, oklch(0.85 0.12 50), oklch(0.65 0.18 30))" },
+  { name: "Lavender",      css: "linear-gradient(180deg, oklch(0.8 0.08 300), oklch(0.5 0.15 290))" },
+  { name: "Dragon",        css: "linear-gradient(135deg, oklch(0.45 0.22 30), oklch(0.25 0.18 320))" },
+  { name: "Tide",          css: "linear-gradient(180deg, oklch(0.55 0.18 200), oklch(0.25 0.12 230))" },
+  { name: "Eclipse",       css: "radial-gradient(circle at 50% 50%, oklch(0.05 0 0) 0%, oklch(0.05 0 0) 30%, oklch(0.4 0.2 30) 31%, oklch(0.1 0.05 270) 100%)" },
+  { name: "Honey",         css: "linear-gradient(180deg, oklch(0.85 0.18 80), oklch(0.55 0.18 60))" },
+  { name: "Steel",         css: "linear-gradient(180deg, oklch(0.6 0.02 230), oklch(0.2 0.02 230))" },
+  { name: "Rose Gold",     css: "linear-gradient(135deg, oklch(0.8 0.12 30), oklch(0.55 0.15 10))" },
+  { name: "Volt",          css: "linear-gradient(135deg, oklch(0.85 0.25 110), oklch(0.4 0.2 200))" },
+  { name: "Berry",         css: "linear-gradient(180deg, oklch(0.45 0.22 350), oklch(0.2 0.15 320))" },
+  { name: "Teal Dream",    css: "linear-gradient(180deg, oklch(0.6 0.15 195), oklch(0.25 0.1 210))" },
+  { name: "Watermelon",    css: "linear-gradient(180deg, oklch(0.7 0.2 20), oklch(0.55 0.2 150))" },
+  { name: "Inferno",       css: "linear-gradient(180deg, oklch(0.7 0.22 50), oklch(0.4 0.22 25), oklch(0.1 0.05 0))" },
+  { name: "Nebula",        css: "radial-gradient(circle at 30% 70%, oklch(0.5 0.22 320), oklch(0.3 0.15 240), oklch(0.08 0.03 260))" },
+  { name: "Static",        css: "repeating-linear-gradient(45deg, oklch(0.2 0.04 270) 0 8px, oklch(0.25 0.06 280) 8px 16px)" },
+  { name: "Stripe Op",     css: "repeating-linear-gradient(90deg, oklch(0.15 0.04 280) 0 20px, oklch(0.25 0.1 200) 20px 40px)" },
+  { name: "Glitch",        css: "linear-gradient(180deg, oklch(0.2 0.2 320), oklch(0.6 0.25 180), oklch(0.2 0.2 30))" },
+];
+
 function defaultState(): SaveState {
   return { bytes: 0, totalBytes: 0, clicks: 0, perClick: 1, owned: {} };
 }
@@ -185,6 +239,9 @@ function Index() {
   const [code, setCode] = useState("");
   const [codeMsg, setCodeMsg] = useState<{ text: string; ok: boolean } | null>(null);
   const [usedCodes, setUsedCodes] = useState<string[]>([]);
+  const [glitchUnlocked, setGlitchUnlocked] = useState(false);
+  const [bgIndex, setBgIndex] = useState(0);
+  const [showBgPanel, setShowBgPanel] = useState(false);
   const popId = useRef(0);
   const loaded = useRef(false);
 
@@ -195,6 +252,9 @@ function Index() {
       if (raw) setState({ ...defaultState(), ...JSON.parse(raw) });
       const usedRaw = localStorage.getItem(STORAGE_KEY + "-codes");
       if (usedRaw) setUsedCodes(JSON.parse(usedRaw));
+      if (localStorage.getItem(STORAGE_KEY + "-glitch") === "1") setGlitchUnlocked(true);
+      const bg = localStorage.getItem(STORAGE_KEY + "-bg");
+      if (bg) setBgIndex(Math.max(0, Math.min(BACKGROUNDS.length - 1, parseInt(bg, 10) || 0)));
     } catch {}
     loaded.current = true;
   }, []);
@@ -252,7 +312,13 @@ function Index() {
     if (confirm("Reset your protogen empire? All progress will be lost.")) {
       setState(defaultState());
       setUsedCodes([]);
-      try { localStorage.removeItem(STORAGE_KEY + "-codes"); } catch {}
+      setGlitchUnlocked(false);
+      setBgIndex(0);
+      try {
+        localStorage.removeItem(STORAGE_KEY + "-codes");
+        localStorage.removeItem(STORAGE_KEY + "-glitch");
+        localStorage.removeItem(STORAGE_KEY + "-bg");
+      } catch {}
     }
   }
 
@@ -271,6 +337,31 @@ function Index() {
     e.preventDefault();
     const key = code.trim().toUpperCase().slice(0, 32);
     if (!key) return;
+
+    // Special: GLITCH unlocks 50 background options
+    if (key === "GLITCH") {
+      if (glitchUnlocked) {
+        setCodeMsg({ text: "Glitch already unlocked.", ok: false });
+      } else {
+        setGlitchUnlocked(true);
+        setShowBgPanel(true);
+        try { localStorage.setItem(STORAGE_KEY + "-glitch", "1"); } catch {}
+        setCodeMsg({ text: "GLITCH unlocked: 50 backgrounds available!", ok: true });
+      }
+      setCode("");
+      return;
+    }
+
+    // Admin: unlocks everything + huge cookies + glitch
+    if (key === "PROTOADMIN") {
+      setState((s) => ({ ...s, bytes: s.bytes + 1e18, totalBytes: s.totalBytes + 1e18, perClick: Math.max(s.perClick, 1e9) }));
+      setGlitchUnlocked(true);
+      try { localStorage.setItem(STORAGE_KEY + "-glitch", "1"); } catch {}
+      setCodeMsg({ text: "ADMIN MODE: cookies + boop power + glitch unlocked.", ok: true });
+      setCode("");
+      return;
+    }
+
     const entry = CODES[key];
     if (!entry) {
       setCodeMsg({ text: "Invalid code.", ok: false });
@@ -290,6 +381,11 @@ function Index() {
     }
     setCodeMsg({ text: `Redeemed: ${entry.label}!`, ok: true });
     setCode("");
+  }
+
+  function pickBg(i: number) {
+    setBgIndex(i);
+    try { localStorage.setItem(STORAGE_KEY + "-bg", String(i)); } catch {}
   }
 
   const clickCost = Math.ceil(50 * Math.pow(2, state.perClick - 1));
