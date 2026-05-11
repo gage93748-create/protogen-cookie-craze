@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState, useRef } from "react";
-import protogenImg from "@/assets/protogen.png";
+import protogenImg from "@/assets/protogen.jpg";
 
 export const Route = createFileRoute("/")({
   component: Index,
