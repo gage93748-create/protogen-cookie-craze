@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState, useRef } from "react";
 import protogenImg from "@/assets/protogen.jpg";
+import hackerImg from "@/assets/protogen-hacker.png";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -162,59 +163,99 @@ type SaveState = {
 
 const STORAGE_KEY = "protogen-clicker-save-v1";
 
-// 50 unlockable backgrounds for the GLITCH code.
-const BACKGROUNDS: { name: string; css: string }[] = [
-  { name: "Cyber Default", css: "radial-gradient(ellipse at top, oklch(0.28 0.12 280) 0%, oklch(0.13 0.05 270) 60%, oklch(0.08 0.03 260) 100%)" },
-  { name: "Neon Sunset",   css: "linear-gradient(180deg, oklch(0.4 0.18 30), oklch(0.2 0.15 320))" },
-  { name: "Acid Lime",     css: "linear-gradient(135deg, oklch(0.5 0.25 140), oklch(0.2 0.1 200))" },
-  { name: "Bubblegum",     css: "linear-gradient(135deg, oklch(0.7 0.2 350), oklch(0.6 0.2 300))" },
-  { name: "Deep Space",    css: "radial-gradient(circle at 30% 20%, oklch(0.25 0.1 270), oklch(0.05 0.02 260))" },
-  { name: "Lava",          css: "linear-gradient(180deg, oklch(0.45 0.22 30), oklch(0.15 0.1 20))" },
-  { name: "Glacier",       css: "linear-gradient(180deg, oklch(0.85 0.05 220), oklch(0.4 0.1 240))" },
-  { name: "Forest",        css: "linear-gradient(180deg, oklch(0.4 0.12 150), oklch(0.15 0.06 140))" },
-  { name: "Mono Ink",      css: "linear-gradient(180deg, oklch(0.2 0 0), oklch(0.05 0 0))" },
-  { name: "Pure White",    css: "linear-gradient(180deg, oklch(0.98 0 0), oklch(0.9 0 0))" },
-  { name: "Vapor",         css: "linear-gradient(135deg, oklch(0.7 0.18 320), oklch(0.6 0.18 220))" },
-  { name: "Aurora",        css: "linear-gradient(135deg, oklch(0.5 0.2 160), oklch(0.4 0.2 280), oklch(0.5 0.2 30))" },
-  { name: "Magma",         css: "radial-gradient(circle at 50% 80%, oklch(0.6 0.25 40), oklch(0.1 0.08 20))" },
-  { name: "Ocean",         css: "linear-gradient(180deg, oklch(0.45 0.15 220), oklch(0.15 0.08 240))" },
-  { name: "Cherry",        css: "linear-gradient(135deg, oklch(0.55 0.22 20), oklch(0.25 0.15 0))" },
-  { name: "Mint",          css: "linear-gradient(180deg, oklch(0.85 0.1 170), oklch(0.5 0.15 180))" },
-  { name: "Plasma",        css: "conic-gradient(from 90deg, oklch(0.5 0.25 320), oklch(0.5 0.25 200), oklch(0.5 0.25 60), oklch(0.5 0.25 320))" },
-  { name: "Synthwave",     css: "linear-gradient(180deg, oklch(0.3 0.15 300) 0%, oklch(0.4 0.2 340) 50%, oklch(0.5 0.22 30) 100%)" },
-  { name: "Toxic",         css: "linear-gradient(135deg, oklch(0.7 0.25 130), oklch(0.3 0.15 280))" },
-  { name: "Royal",         css: "linear-gradient(180deg, oklch(0.3 0.15 280), oklch(0.15 0.1 290))" },
-  { name: "Sahara",        css: "linear-gradient(180deg, oklch(0.75 0.15 70), oklch(0.4 0.12 50))" },
-  { name: "Twilight",      css: "linear-gradient(180deg, oklch(0.5 0.15 260), oklch(0.2 0.1 320))" },
-  { name: "Candy",         css: "linear-gradient(135deg, oklch(0.85 0.15 350), oklch(0.7 0.2 50), oklch(0.75 0.18 200))" },
-  { name: "Cyber Pink",    css: "linear-gradient(135deg, oklch(0.55 0.25 340), oklch(0.25 0.15 290))" },
-  { name: "Matrix",        css: "linear-gradient(180deg, oklch(0.15 0.05 150), oklch(0.05 0.02 140))" },
-  { name: "Hot Coral",     css: "linear-gradient(135deg, oklch(0.7 0.22 30), oklch(0.45 0.2 10))" },
-  { name: "Galaxy",        css: "radial-gradient(circle at 70% 30%, oklch(0.4 0.2 290), oklch(0.1 0.05 270))" },
-  { name: "Mocha",         css: "linear-gradient(180deg, oklch(0.4 0.06 60), oklch(0.18 0.04 50))" },
-  { name: "Citrus",        css: "linear-gradient(135deg, oklch(0.85 0.18 90), oklch(0.65 0.2 45))" },
-  { name: "Sapphire",      css: "linear-gradient(180deg, oklch(0.35 0.18 250), oklch(0.1 0.08 250))" },
-  { name: "Ember",         css: "radial-gradient(circle at 50% 100%, oklch(0.6 0.22 40), oklch(0.1 0.05 20))" },
-  { name: "Iceberg",       css: "linear-gradient(180deg, oklch(0.9 0.04 220), oklch(0.55 0.1 230))" },
-  { name: "Oil Slick",     css: "conic-gradient(from 180deg, oklch(0.3 0.15 280), oklch(0.3 0.15 180), oklch(0.3 0.15 80), oklch(0.3 0.15 280))" },
-  { name: "Peach",         css: "linear-gradient(180deg, oklch(0.85 0.12 50), oklch(0.65 0.18 30))" },
-  { name: "Lavender",      css: "linear-gradient(180deg, oklch(0.8 0.08 300), oklch(0.5 0.15 290))" },
-  { name: "Dragon",        css: "linear-gradient(135deg, oklch(0.45 0.22 30), oklch(0.25 0.18 320))" },
-  { name: "Tide",          css: "linear-gradient(180deg, oklch(0.55 0.18 200), oklch(0.25 0.12 230))" },
-  { name: "Eclipse",       css: "radial-gradient(circle at 50% 50%, oklch(0.05 0 0) 0%, oklch(0.05 0 0) 30%, oklch(0.4 0.2 30) 31%, oklch(0.1 0.05 270) 100%)" },
-  { name: "Honey",         css: "linear-gradient(180deg, oklch(0.85 0.18 80), oklch(0.55 0.18 60))" },
-  { name: "Steel",         css: "linear-gradient(180deg, oklch(0.6 0.02 230), oklch(0.2 0.02 230))" },
-  { name: "Rose Gold",     css: "linear-gradient(135deg, oklch(0.8 0.12 30), oklch(0.55 0.15 10))" },
-  { name: "Volt",          css: "linear-gradient(135deg, oklch(0.85 0.25 110), oklch(0.4 0.2 200))" },
-  { name: "Berry",         css: "linear-gradient(180deg, oklch(0.45 0.22 350), oklch(0.2 0.15 320))" },
-  { name: "Teal Dream",    css: "linear-gradient(180deg, oklch(0.6 0.15 195), oklch(0.25 0.1 210))" },
-  { name: "Watermelon",    css: "linear-gradient(180deg, oklch(0.7 0.2 20), oklch(0.55 0.2 150))" },
-  { name: "Inferno",       css: "linear-gradient(180deg, oklch(0.7 0.22 50), oklch(0.4 0.22 25), oklch(0.1 0.05 0))" },
-  { name: "Nebula",        css: "radial-gradient(circle at 30% 70%, oklch(0.5 0.22 320), oklch(0.3 0.15 240), oklch(0.08 0.03 260))" },
-  { name: "Static",        css: "repeating-linear-gradient(45deg, oklch(0.2 0.04 270) 0 8px, oklch(0.25 0.06 280) 8px 16px)" },
-  { name: "Stripe Op",     css: "repeating-linear-gradient(90deg, oklch(0.15 0.04 280) 0 20px, oklch(0.25 0.1 200) 20px 40px)" },
-  { name: "Glitch",        css: "linear-gradient(180deg, oklch(0.2 0.2 320), oklch(0.6 0.25 180), oklch(0.2 0.2 30))" },
+// Shared starfield layer — small white dots scattered across the screen,
+// inspired by the cosmic protogen reference image.
+const STAR_LAYER = (() => {
+  // Deterministic pseudo-random scatter so the field stays consistent.
+  const stars: string[] = [];
+  let seed = 1337;
+  const rand = () => {
+    seed = (seed * 9301 + 49297) % 233280;
+    return seed / 233280;
+  };
+  for (let i = 0; i < 70; i++) {
+    const x = (rand() * 100).toFixed(1);
+    const y = (rand() * 100).toFixed(1);
+    const size = rand() < 0.15 ? 2 : 1;
+    const alpha = (0.4 + rand() * 0.6).toFixed(2);
+    stars.push(`radial-gradient(${size}px ${size}px at ${x}% ${y}%, rgba(255,255,255,${alpha}) 50%, transparent 100%)`);
+  }
+  return stars.join(", ");
+})();
+
+// 50 cosmic nebula backgrounds for the GLITCH code — all share the starfield
+// and use a two/three-color radial nebula glow over a deep cosmic backdrop.
+const NEBULA_PALETTES: { name: string; a: string; b: string; c: string }[] = [
+  { name: "Cosmic Drift",      a: "oklch(0.45 0.22 290)", b: "oklch(0.35 0.2 250)", c: "oklch(0.06 0.04 270)" },
+  { name: "Violet Dream",      a: "oklch(0.5 0.22 310)",  b: "oklch(0.3 0.18 280)", c: "oklch(0.05 0.03 280)" },
+  { name: "Indigo Mist",       a: "oklch(0.4 0.2 270)",   b: "oklch(0.25 0.15 260)", c: "oklch(0.05 0.03 260)" },
+  { name: "Magenta Cloud",     a: "oklch(0.55 0.25 330)", b: "oklch(0.35 0.2 290)",  c: "oklch(0.06 0.04 280)" },
+  { name: "Sapphire Veil",     a: "oklch(0.45 0.22 250)", b: "oklch(0.25 0.15 240)", c: "oklch(0.04 0.03 240)" },
+  { name: "Rose Nebula",       a: "oklch(0.6 0.22 350)",  b: "oklch(0.35 0.2 320)",  c: "oklch(0.06 0.04 300)" },
+  { name: "Teal Galaxy",       a: "oklch(0.5 0.18 200)",  b: "oklch(0.3 0.15 230)",  c: "oklch(0.05 0.03 240)" },
+  { name: "Crimson Star",      a: "oklch(0.55 0.25 25)",  b: "oklch(0.3 0.18 350)",  c: "oklch(0.05 0.04 290)" },
+  { name: "Emerald Cosmos",    a: "oklch(0.5 0.2 160)",   b: "oklch(0.3 0.15 200)",  c: "oklch(0.04 0.03 230)" },
+  { name: "Amber Nova",        a: "oklch(0.6 0.22 70)",   b: "oklch(0.35 0.2 30)",   c: "oklch(0.05 0.04 280)" },
+  { name: "Aurora Sky",        a: "oklch(0.55 0.2 150)",  b: "oklch(0.45 0.2 280)",  c: "oklch(0.05 0.03 270)" },
+  { name: "Pink Stardust",     a: "oklch(0.65 0.2 340)",  b: "oklch(0.4 0.18 300)",  c: "oklch(0.07 0.04 290)" },
+  { name: "Ice Cosmos",        a: "oklch(0.55 0.15 220)", b: "oklch(0.3 0.12 240)",  c: "oklch(0.05 0.02 240)" },
+  { name: "Plasma Storm",      a: "oklch(0.5 0.25 320)",  b: "oklch(0.45 0.22 200)", c: "oklch(0.06 0.04 270)" },
+  { name: "Solar Wind",        a: "oklch(0.6 0.22 60)",   b: "oklch(0.4 0.2 20)",    c: "oklch(0.05 0.04 270)" },
+  { name: "Deep Indigo",       a: "oklch(0.35 0.2 280)",  b: "oklch(0.2 0.15 270)",  c: "oklch(0.03 0.02 270)" },
+  { name: "Comet Trail",       a: "oklch(0.55 0.18 220)", b: "oklch(0.4 0.2 320)",   c: "oklch(0.05 0.03 270)" },
+  { name: "Quasar",            a: "oklch(0.65 0.25 280)", b: "oklch(0.35 0.2 220)",  c: "oklch(0.04 0.03 250)" },
+  { name: "Pulsar",            a: "oklch(0.6 0.22 200)",  b: "oklch(0.35 0.2 280)",  c: "oklch(0.05 0.03 260)" },
+  { name: "Andromeda",         a: "oklch(0.5 0.2 30)",    b: "oklch(0.35 0.2 280)",  c: "oklch(0.06 0.04 270)" },
+  { name: "Milky Way",         a: "oklch(0.55 0.18 80)",  b: "oklch(0.4 0.18 240)",  c: "oklch(0.05 0.03 260)" },
+  { name: "Black Hole",        a: "oklch(0.4 0.2 30)",    b: "oklch(0.15 0.08 280)", c: "oklch(0.02 0.01 0)" },
+  { name: "Neutron Star",      a: "oklch(0.7 0.18 220)",  b: "oklch(0.3 0.15 250)",  c: "oklch(0.04 0.03 250)" },
+  { name: "Eagle Nebula",      a: "oklch(0.55 0.22 50)",  b: "oklch(0.35 0.2 320)",  c: "oklch(0.05 0.03 280)" },
+  { name: "Crab Nebula",       a: "oklch(0.6 0.22 30)",   b: "oklch(0.4 0.2 280)",   c: "oklch(0.05 0.03 270)" },
+  { name: "Helix",             a: "oklch(0.55 0.22 200)", b: "oklch(0.4 0.2 30)",    c: "oklch(0.05 0.03 270)" },
+  { name: "Carina",            a: "oklch(0.5 0.22 350)",  b: "oklch(0.35 0.2 240)",  c: "oklch(0.05 0.03 260)" },
+  { name: "Orion",             a: "oklch(0.55 0.22 280)", b: "oklch(0.4 0.2 220)",   c: "oklch(0.05 0.03 250)" },
+  { name: "Pleiades",           a: "oklch(0.6 0.18 230)",  b: "oklch(0.4 0.18 280)",  c: "oklch(0.04 0.03 260)" },
+  { name: "Tarantula",         a: "oklch(0.5 0.22 320)",  b: "oklch(0.3 0.15 260)",  c: "oklch(0.05 0.03 270)" },
+  { name: "Cassiopeia",        a: "oklch(0.55 0.22 270)", b: "oklch(0.4 0.18 320)",  c: "oklch(0.05 0.03 280)" },
+  { name: "Cygnus",            a: "oklch(0.5 0.2 220)",   b: "oklch(0.35 0.18 270)", c: "oklch(0.04 0.03 260)" },
+  { name: "Lyra",              a: "oklch(0.55 0.2 160)",  b: "oklch(0.35 0.18 240)", c: "oklch(0.05 0.03 250)" },
+  { name: "Draco",             a: "oklch(0.45 0.2 140)",  b: "oklch(0.3 0.15 260)",  c: "oklch(0.04 0.03 250)" },
+  { name: "Hydra",             a: "oklch(0.55 0.2 200)",  b: "oklch(0.35 0.18 260)", c: "oklch(0.05 0.03 270)" },
+  { name: "Scorpius",          a: "oklch(0.55 0.22 20)",  b: "oklch(0.35 0.2 320)",  c: "oklch(0.05 0.03 280)" },
+  { name: "Sagittarius",       a: "oklch(0.55 0.2 50)",   b: "oklch(0.35 0.18 280)", c: "oklch(0.05 0.03 270)" },
+  { name: "Vega",              a: "oklch(0.65 0.18 220)", b: "oklch(0.4 0.18 270)",  c: "oklch(0.04 0.03 250)" },
+  { name: "Sirius",            a: "oklch(0.7 0.15 230)",  b: "oklch(0.4 0.18 280)",  c: "oklch(0.05 0.03 260)" },
+  { name: "Polaris",           a: "oklch(0.65 0.15 240)", b: "oklch(0.4 0.18 280)",  c: "oklch(0.04 0.03 260)" },
+  { name: "Antares",           a: "oklch(0.6 0.22 30)",   b: "oklch(0.35 0.2 350)",  c: "oklch(0.05 0.04 290)" },
+  { name: "Betelgeuse",        a: "oklch(0.6 0.22 40)",   b: "oklch(0.35 0.2 10)",   c: "oklch(0.05 0.04 280)" },
+  { name: "Rigel",             a: "oklch(0.6 0.18 240)",  b: "oklch(0.35 0.2 280)",  c: "oklch(0.04 0.03 260)" },
+  { name: "Arcturus",          a: "oklch(0.6 0.22 60)",   b: "oklch(0.4 0.2 30)",    c: "oklch(0.05 0.04 280)" },
+  { name: "Procyon",           a: "oklch(0.65 0.15 90)",  b: "oklch(0.4 0.18 250)",  c: "oklch(0.05 0.03 260)" },
+  { name: "Capella",           a: "oklch(0.65 0.18 80)",  b: "oklch(0.4 0.18 280)",  c: "oklch(0.05 0.03 270)" },
+  { name: "Aldebaran",         a: "oklch(0.6 0.22 40)",   b: "oklch(0.35 0.2 320)",  c: "oklch(0.05 0.04 280)" },
+  { name: "Spica",             a: "oklch(0.6 0.18 240)",  b: "oklch(0.35 0.2 270)",  c: "oklch(0.04 0.03 260)" },
+  { name: "Altair",            a: "oklch(0.65 0.18 200)", b: "oklch(0.4 0.18 260)",  c: "oklch(0.05 0.03 270)" },
+  { name: "Cosmic Default",    a: "oklch(0.45 0.2 280)",  b: "oklch(0.3 0.15 250)",  c: "oklch(0.06 0.03 260)" },
 ];
+
+const BACKGROUNDS: { name: string; css: string }[] = NEBULA_PALETTES.map((p, i) => {
+  // Two nebula glow blobs at varying positions for visual variety.
+  const x1 = 20 + ((i * 17) % 60);
+  const y1 = 25 + ((i * 11) % 50);
+  const x2 = 70 - ((i * 13) % 50);
+  const y2 = 70 - ((i * 7) % 40);
+  const nebula =
+    `radial-gradient(60% 50% at ${x1}% ${y1}%, ${p.a} 0%, transparent 60%), ` +
+    `radial-gradient(55% 45% at ${x2}% ${y2}%, ${p.b} 0%, transparent 65%), ` +
+    `linear-gradient(180deg, ${p.c} 0%, oklch(0.03 0.02 270) 100%)`;
+  return { name: p.name, css: `${STAR_LAYER}, ${nebula}` };
+});
+
+// Hacker mode background — matrix code wall.
+const HACKER_BG =
+  "repeating-linear-gradient(0deg, transparent 0 14px, oklch(0.6 0.25 145 / 0.08) 14px 15px), " +
+  "repeating-linear-gradient(90deg, transparent 0 14px, oklch(0.6 0.25 145 / 0.05) 14px 15px), " +
+  "radial-gradient(ellipse at center, oklch(0.18 0.12 145) 0%, oklch(0.04 0.03 145) 70%, oklch(0.02 0.01 145) 100%)";
 
 function defaultState(): SaveState {
   return { bytes: 0, totalBytes: 0, clicks: 0, perClick: 1, owned: {} };
@@ -242,6 +283,7 @@ function Index() {
   const [glitchUnlocked, setGlitchUnlocked] = useState(false);
   const [bgIndex, setBgIndex] = useState(0);
   const [showBgPanel, setShowBgPanel] = useState(false);
+  const [hackerMode, setHackerMode] = useState(false);
   const popId = useRef(0);
   const loaded = useRef(false);
 
@@ -255,6 +297,7 @@ function Index() {
       if (localStorage.getItem(STORAGE_KEY + "-glitch") === "1") setGlitchUnlocked(true);
       const bg = localStorage.getItem(STORAGE_KEY + "-bg");
       if (bg) setBgIndex(Math.max(0, Math.min(BACKGROUNDS.length - 1, parseInt(bg, 10) || 0)));
+      if (localStorage.getItem(STORAGE_KEY + "-hacker") === "1") setHackerMode(true);
     } catch {}
     loaded.current = true;
   }, []);
@@ -314,10 +357,12 @@ function Index() {
       setUsedCodes([]);
       setGlitchUnlocked(false);
       setBgIndex(0);
+      setHackerMode(false);
       try {
         localStorage.removeItem(STORAGE_KEY + "-codes");
         localStorage.removeItem(STORAGE_KEY + "-glitch");
         localStorage.removeItem(STORAGE_KEY + "-bg");
+        localStorage.removeItem(STORAGE_KEY + "-hacker");
       } catch {}
     }
   }
@@ -348,6 +393,19 @@ function Index() {
         try { localStorage.setItem(STORAGE_KEY + "-glitch", "1"); } catch {}
         setCodeMsg({ text: "GLITCH unlocked: 50 backgrounds available!", ok: true });
       }
+      setCode("");
+      return;
+    }
+
+    // HACK: turns the entire UI into hacker mode (matrix bg + hacker protogen)
+    if (key === "HACK") {
+      const next = !hackerMode;
+      setHackerMode(next);
+      try {
+        if (next) localStorage.setItem(STORAGE_KEY + "-hacker", "1");
+        else localStorage.removeItem(STORAGE_KEY + "-hacker");
+      } catch {}
+      setCodeMsg({ text: next ? "ACCESS GRANTED — hacker mode engaged." : "Hacker mode disengaged.", ok: true });
       setCode("");
       return;
     }
@@ -392,7 +450,7 @@ function Index() {
 
   return (
     <div className="min-h-screen relative overflow-hidden" style={{
-      background: BACKGROUNDS[bgIndex]?.css ?? BACKGROUNDS[0].css,
+      background: hackerMode ? HACKER_BG : (BACKGROUNDS[bgIndex]?.css ?? BACKGROUNDS[0].css),
       color: "var(--color-foreground)",
     }}>
       {/* grid bg */}
@@ -476,13 +534,16 @@ function Index() {
             style={{ filter: "drop-shadow(0 0 40px oklch(0.7 0.25 200 / 0.55))" }}
           >
             <img
-              src={protogenImg}
-              alt="Protogen mascot — click to boop"
+              src={hackerMode ? hackerImg : protogenImg}
+              alt={hackerMode ? "Hacker protogen — click to hack" : "Protogen mascot — click to boop"}
               width={384}
               height={384}
               draggable={false}
               className={"w-72 h-72 md:w-96 md:h-96 transition-transform " + (bouncing ? "scale-95" : "scale-100")}
-              style={{ animation: "protoFloat 4s ease-in-out infinite" }}
+              style={{
+                animation: "protoFloat 4s ease-in-out infinite",
+                filter: hackerMode ? "drop-shadow(0 0 30px oklch(0.7 0.3 145 / 0.8))" : undefined,
+              }}
             />
             {pops.map((p) => (
               <span key={p.id}
