@@ -283,6 +283,7 @@ function Index() {
   const [glitchUnlocked, setGlitchUnlocked] = useState(false);
   const [bgIndex, setBgIndex] = useState(0);
   const [showBgPanel, setShowBgPanel] = useState(false);
+  const [hackerMode, setHackerMode] = useState(false);
   const popId = useRef(0);
   const loaded = useRef(false);
 
@@ -296,6 +297,7 @@ function Index() {
       if (localStorage.getItem(STORAGE_KEY + "-glitch") === "1") setGlitchUnlocked(true);
       const bg = localStorage.getItem(STORAGE_KEY + "-bg");
       if (bg) setBgIndex(Math.max(0, Math.min(BACKGROUNDS.length - 1, parseInt(bg, 10) || 0)));
+      if (localStorage.getItem(STORAGE_KEY + "-hacker") === "1") setHackerMode(true);
     } catch {}
     loaded.current = true;
   }, []);
@@ -355,10 +357,12 @@ function Index() {
       setUsedCodes([]);
       setGlitchUnlocked(false);
       setBgIndex(0);
+      setHackerMode(false);
       try {
         localStorage.removeItem(STORAGE_KEY + "-codes");
         localStorage.removeItem(STORAGE_KEY + "-glitch");
         localStorage.removeItem(STORAGE_KEY + "-bg");
+        localStorage.removeItem(STORAGE_KEY + "-hacker");
       } catch {}
     }
   }
@@ -389,6 +393,19 @@ function Index() {
         try { localStorage.setItem(STORAGE_KEY + "-glitch", "1"); } catch {}
         setCodeMsg({ text: "GLITCH unlocked: 50 backgrounds available!", ok: true });
       }
+      setCode("");
+      return;
+    }
+
+    // HACK: turns the entire UI into hacker mode (matrix bg + hacker protogen)
+    if (key === "HACK") {
+      const next = !hackerMode;
+      setHackerMode(next);
+      try {
+        if (next) localStorage.setItem(STORAGE_KEY + "-hacker", "1");
+        else localStorage.removeItem(STORAGE_KEY + "-hacker");
+      } catch {}
+      setCodeMsg({ text: next ? "ACCESS GRANTED — hacker mode engaged." : "Hacker mode disengaged.", ok: true });
       setCode("");
       return;
     }
