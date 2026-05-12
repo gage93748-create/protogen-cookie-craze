@@ -679,6 +679,29 @@ function Index() {
         </aside>
       </main>
 
+      {bricked && (
+        <div
+          className="fixed inset-0 flex items-center justify-center text-center px-6"
+          style={{
+            zIndex: 50,
+            background: "oklch(0.08 0.05 20 / 0.92)",
+            backdropFilter: "blur(6px)",
+            color: "oklch(0.95 0.2 25)",
+            fontFamily: "monospace",
+          }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div>
+            <div className="text-6xl md:text-8xl font-extrabold mb-4" style={{ textShadow: "0 0 30px oklch(0.6 0.3 25)" }}>
+              ⚠ BRICKED ⚠
+            </div>
+            <div className="text-base md:text-xl opacity-90">
+              SYSTEM LOCKED. Tap the <span style={{ color: "oklch(0.85 0.18 200)" }}>Protogen Clicker</span> logo to recover.
+            </div>
+          </div>
+        </div>
+      )}
+
       <style>{`
         @keyframes popUp {
           0% { transform: translate(-50%, 0) scale(1); opacity: 1; }
